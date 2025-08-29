@@ -2,10 +2,72 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin-top: 50px;
+    transition: background-color 0.3s, color 0.3s;
 }
+
 h1 {
     color: #333;
 }
+
 p {
     color: #666;
+}
+
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.toggle-button {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.toggle-circle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.toggle-button.active {
+    background-color: #4caf50;
+}
+
+.toggle-button.active .toggle-circle {
+    transform: translateX(30px);
+}
+
+.theme-info {
+    font-size: 16px;
+    color: #333;
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode h1 {
+    color: #fff;
+}
+
+body.dark-mode p {
+    color: #ccc;
+}
+
+body.dark-mode .theme-info {
+    color: #ccc;
 }
