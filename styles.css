@@ -14,9 +14,10 @@ p {
 }
 
 .toggle-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
+    position: fixed ;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
 }
 
 .toggle-button {
@@ -53,6 +54,10 @@ p {
 .theme-info {
     font-size: 16px;
     color: #333;
+    position: fixed;
+    top: 60 px;
+    right: 20px;
+    z-index:1000;
 }
 
 body.dark-mode {
