@@ -58,7 +58,10 @@
                 <h2>Cloud Web</h2>
                 <p>This is a simple webpage to get started.</p>
                 <div id="tab-panels" class="tab-panels"></div>
-                <button id="output-btn" style="padding: 10px; font-size: 14px; background: #3b82f6; color: #fff; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px;">Generate Output HTML</button>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button id="output-btn" style="padding: 10px; font-size: 14px; background: #3b82f6; color: #fff; border: none; border-radius: 6px; cursor: pointer;">Generate Output HTML</button>
+                    <button id="copy-btn" style="padding: 10px; font-size: 14px; background: #10b981; color: #fff; border: none; border-radius: 6px; cursor: pointer;">Copy HTML</button>
+                </div>
             </div>
             <aside class="output-bar" aria-label="Output">
                 <div class="output-header">Output</div>
@@ -73,14 +76,8 @@
     <!-- Panel template -->
     <template id="panel-template">
         <div class="panel-body">
-            <label>
-                Title:
-                <input class="panel-title-input" type="text" placeholder="Untitled tab"/>
-            </label>
-            <label>
-                Notes:
-                <textarea class="panel-notes" rows="6" placeholder="Write something..."></textarea>
-            </label>
+            <input class="panel-title-input" type="text" placeholder="Untitled tab"/>
+            <textarea class="panel-notes" rows="6" placeholder="Write something..."></textarea>
         </div>
     </template>
     <script src="dist/script.js"></script>
