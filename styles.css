@@ -22,6 +22,11 @@ footer {
     color: white;
     padding: 10px;
     text-align: center;
+    transition: transform 0.2s; 
+}
+
+footer.hover {
+    transform: translateY(-2pc);
 }
 
 h1 { color: #333; 
@@ -425,5 +430,10 @@ body.dark-mode .panel-notes:focus {
     }
     .hamburger-menu.open {
         width: 150px; /* Smaller menu on mobile */
+    }
+    .student-number {
+        top: 10px;
+        left:10px;
+        font-size: 12px;
     }
 }
