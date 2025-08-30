@@ -132,6 +132,7 @@ body.dark-mode .tab-limit { color: #aaa; }
     overflow-y: auto;
 }
 
+/* === Tabs: full width, equal sizing === */
 .tab {
     display: flex;
     align-items: center;
@@ -309,6 +310,7 @@ body.dark-mode .panel-notes:focus {
     outline: 2px solid #60a5fa;
 }
 
+/* === Responsive === */
 @media (max-width: 760px) {
     .app {
         grid-template-columns: 1fr;
