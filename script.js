@@ -1,247 +1,333 @@
-// === Theme toggle with localStorage persistence ===
+const elements = {
+  body: document.body,
+  toggleButton: document.querySelector('.toggle-button'),
+  themeName: document.getElementById('theme-name'),
+  hamburger: document.querySelector('.hamburger'),
+  menu: document.querySelector('.hamburger-menu'),
+  bars: document.querySelectorAll('.bar'),
+  tabListEl: document.getElementById('tab-list'),
+  tabPanelsEl: document.getElementById('tab-panels'),
+  addTabBtn: document.getElementById('add-tab'),
+  panelTmpl: document.getElementById('panel-template'),
+  navButtons: document.querySelectorAll('.nav-btn'),
+  outputView: document.getElementById('output-view'),
+  outputBtn: document.getElementById('output-btn')
+};
+
 function switchTheme() {
-    var body = document.body;
-    var toggleButton = document.querySelector('.toggle-button');
-    var themeName = document.getElementById('theme-name');
-    if (toggleButton && themeName) {
-        body.classList.toggle('dark-mode');
-        toggleButton.classList.toggle('active');
-        if (body.classList.contains('dark-mode')) {
-            themeName.textContent = 'Dark';
-            try {
-                localStorage.setItem('theme', 'dark');
-            }
-            catch (_) { }
-        }
-        else {
-            themeName.textContent = 'Light';
-            try {
-                localStorage.setItem('theme', 'light');
-            }
-            catch (_) { }
-        }
-    }
+  if (!elements.toggleButton || !elements.themeName) return;
+
+  elements.body.classList.toggle('dark-mode');
+  elements.toggleButton.classList.toggle('active');
+
+  const isDarkMode = elements.body.classList.contains('dark-mode');
+  elements.themeName.textContent = isDarkMode ? 'dark' : 'light';
+  try {
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  } catch (error) {
+    console.error('Failed to save theme:', error);
+  }
 }
-// Apply saved theme on page load
-(function initTheme() {
-    var saved = (function () {
-        try {
-            return localStorage.getItem('theme');
-        }
-        catch (_) {
-            return null;
-        }
-    })();
-    var body = document.body;
-    var toggleButton = document.querySelector('.toggle-button');
-    var themeName = document.getElementById('theme-name');
-    if (saved === 'dark' && toggleButton && themeName) {
-        body.classList.add('dark-mode');
-        toggleButton.classList.add('active');
-        themeName.textContent = 'Dark';
-    }
-    else if (themeName) {
-        themeName.textContent = 'Light';
-    }
-})();
-// === Hamburger menu toggle for navigation ===
+
+function initTheme() {
+  if (!elements.themeName) return;
+
+  let savedTheme = null;
+  try {
+    savedTheme = localStorage.getItem('theme');
+  } catch (error) {
+    console.error('Failed to load theme:', error);
+  }
+
+  if (savedTheme === 'dark' && elements.toggleButton) {
+    elements.body.classList.add('dark-mode');
+    elements.toggleButton.classList.add('active');
+    elements.themeName.textContent = 'dark';
+  } else {
+    elements.themeName.textContent = 'light';
+  }
+}
+
 function toggleHamburgerMenu() {
-    var hamburger = document.querySelector('.hamburger');
-    var menu = document.querySelector('.hamburger-menu');
-    var bars = document.querySelectorAll('.bar');
-    if (hamburger && menu) {
-        hamburger.classList.toggle('open');
-        menu.classList.toggle('open');
-        bars.forEach(function (bar, index) {
-            bar.classList.toggle('open');
-        });
-    }
+  if (!elements.hamburger || !elements.menu || !elements.bars) return;
+
+  elements.hamburger.classList.toggle('open');
+  elements.menu.classList.toggle('open');
+  elements.bars.forEach(bar => bar.classList.toggle('open'));
 }
-var tabListEl = document.getElementById('tab-list');
-var tabPanelsEl = document.getElementById('tab-panels');
-var addTabBtn = document.getElementById('add-tab');
-var panelTmpl = document.getElementById('panel-template');
-var nextNum = 1; // always the next number to allocate
-var tabs = []; // Array of tab objects
-var MAX_TABS = 15; // limit
+
+function initNavButtons() {
+  if (!elements.navButtons || !elements.outputView) return;
+
+  elements.navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      elements.outputView.textContent = `Navigated to: ${button.textContent || 'Unknown'}`;
+    });
+  });
+}
+
+function generateOutputHTML() {
+  if (!elements.outputView) return;
+
+  const tabData = tabs.map(t => ({
+    id: t.id,
+    title: t.tabEl.textContent || '',
+    notes: t.panelEl.querySelector('.panel-notes')?.value || ''
+  }));
+
+  const tabCount = Math.min(tabData.length, 5);
+  const tabsToInclude = tabData.slice(0, tabCount);
+
+  let html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Tabs</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5;">
+    <h1 style="color: #333; font-size: 2rem; text-align: center;">Generated Tabs</h1>
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 0 auto;">
+`;
+
+  tabsToInclude.forEach((tab, index) => {
+    html += `
+        <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; background: #fff;">
+            <h2 style="font-size: 16px; color: #333; margin: 0 0 10px 0;">${tab.title}</h2>
+            <p style="font-size: 13px; color: #666; margin: 0;">${tab.notes || 'No notes'}</p>
+        </div>
+    `;
+  });
+
+  html += `
+    </div>
+    <footer style="text-align: center; margin-top: 20px; color: #666;">
+        <p>Generated by April-Jane O'Loughlin, 22453908, 29/8/25</p>
+    </footer>
+</body>
+</html>`;
+
+  elements.outputView.textContent = html;
+}
+
+const tabs = [];
+const MAX_TABS = 15;
+let nextNum = 1;
+
 function numFromId(id) {
-    var n = parseInt(id.split('-').pop(), 10);
-    return Number.isFinite(n) ? n : 0;
+  const n = parseInt(id.split('-').pop() || '0', 10);
+  return Number.isFinite(n) ? n : 0;
 }
-function createTab(title, notes) {
-    if (title === void 0) { title = "Tab ".concat(nextNum); }
-    if (notes === void 0) { notes = ''; }
-    if (!tabListEl || !tabPanelsEl || !panelTmpl || !addTabBtn)
-        return null;
-    // enforce tab limit
-    if (tabs.length >= MAX_TABS) {
-        alert("You can only have up to ".concat(MAX_TABS, " tabs."));
-        return null;
-    }
-    var id = "tab-".concat(nextNum);
-    var panelId = "panel-".concat(id);
-    nextNum++;
-    // Sidebar tab item
-    var li = document.createElement('li');
-    li.className = 'tab';
-    li.setAttribute('role', 'presentation');
-    var btn = document.createElement('button');
-    btn.className = 'tab-btn';
-    btn.setAttribute('role', 'tab');
-    btn.id = id;
-    btn.setAttribute('aria-controls', panelId);
-    btn.setAttribute('aria-selected', 'false');
-    btn.textContent = title;
-    var actions = document.createElement('div');
-    actions.className = 'tab-actions';
-    var renameBtn = document.createElement('button');
-    renameBtn.className = 'icon-btn';
-    renameBtn.title = 'Rename';
-    renameBtn.textContent = '✎';
-    var closeBtn = document.createElement('button');
-    closeBtn.className = 'icon-btn';
-    closeBtn.title = 'Close';
-    closeBtn.textContent = '×';
-    actions.append(renameBtn, closeBtn);
-    li.append(btn, actions);
-    tabListEl.appendChild(li);
-    // Panel
-    var panel = document.createElement('div');
-    panel.className = 'panel';
-    panel.id = panelId;
-    panel.setAttribute('role', 'tabpanel');
-    panel.setAttribute('aria-labelledby', id);
-    panel.setAttribute('aria-hidden', 'true');
-    var node = panelTmpl.content.cloneNode(true);
-    panel.appendChild(node);
-    tabPanelsEl.appendChild(panel);
-    // Set initial title and notes
-    var titleInput = panel.querySelector('.panel-title-input');
-    var notesTextarea = panel.querySelector('.panel-notes');
-    if (titleInput && notesTextarea) {
-        titleInput.value = title;
-        notesTextarea.value = notes;
-    }
-    // Track
-    var item = { id: id, tabEl: btn, panelEl: panel, containerEl: li };
-    tabs.push(item);
-    // Events
-    btn.addEventListener('click', function () { return selectTab(id); });
-    btn.addEventListener('keydown', function (e) {
-        var idx = tabs.findIndex(function (t) { return t.id === id; });
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            var nxt = tabs[Math.min(idx + 1, tabs.length - 1)];
-            if (nxt) {
-                nxt.tabEl.focus();
-                selectTab(nxt.id);
-            }
-        }
-        else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            var prv = tabs[Math.max(idx - 1, 0)];
-            if (prv) {
-                prv.tabEl.focus();
-                selectTab(prv.id);
-            }
-        }
-    });
-    renameBtn.addEventListener('click', function () {
-        var current = btn.textContent;
-        var newTitle = prompt('New tab name:', current || '');
-        if (newTitle && newTitle.trim() && newTitle.trim().length > 0 && titleInput) {
-            btn.textContent = newTitle.trim();
-            titleInput.value = newTitle.trim();
-            saveTabs();
-        }
-        else if (newTitle !== null) {
-            alert('Tab name cannot be empty.');
-        }
-    });
-    closeBtn.addEventListener('click', function () {
-        removeTab(id);
-        saveTabs();
-    });
-    if (titleInput) {
-        titleInput.addEventListener('input', function () {
-            btn.textContent = titleInput.value || "Tab ".concat(numFromId(id));
-            saveTabs();
-        });
-    }
-    if (notesTextarea) {
-        notesTextarea.addEventListener('input', function () {
-            saveTabs();
-        });
-    }
-    // Select new tab
+
+function createTab(title = `Tab ${nextNum}`, notes = '') {
+  if (!elements.tabListEl || !elements.tabPanelsEl || !elements.panelTmpl || !elements.addTabBtn) return null;
+
+  if (tabs.length >= MAX_TABS) {
+    alert(`You can only have up to ${MAX_TABS} tabs.`);
+    if (elements.outputView) elements.outputView.textContent = `Error: Maximum ${MAX_TABS} tabs reached`;
+    return null;
+  }
+
+  const id = `tab-${nextNum}`;
+  const panelId = `panel-${id}`;
+  nextNum++;
+
+  const li = document.createElement('li');
+  li.className = 'tab';
+  li.setAttribute('role', 'presentation');
+
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn';
+  btn.setAttribute('role', 'tab');
+  btn.id = id;
+  btn.setAttribute('aria-controls', panelId);
+  btn.setAttribute('aria-selected', 'false');
+  btn.textContent = title;
+
+  const actions = document.createElement('div');
+  actions.className = 'tab-actions';
+
+  const renameBtn = document.createElement('button');
+  renameBtn.className = 'icon-btn';
+  renameBtn.title = 'Rename';
+  renameBtn.textContent = '✎';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'icon-btn';
+  closeBtn.title = 'Close';
+  closeBtn.textContent = '×';
+
+  actions.append(renameBtn, closeBtn);
+  li.append(btn, actions);
+  elements.tabListEl.appendChild(li);
+
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  panel.id = panelId;
+  panel.setAttribute('role', 'tabpanel');
+  panel.setAttribute('aria-labelledby', id);
+  panel.setAttribute('aria-hidden', 'true');
+
+  const node = elements.panelTmpl.content.cloneNode(true);
+  panel.appendChild(node);
+  elements.tabPanelsEl.appendChild(panel);
+
+  const titleInput = panel.querySelector('.panel-title-input');
+  const notesTextarea = panel.querySelector('.panel-notes');
+  if (titleInput && notesTextarea) {
+    titleInput.value = title;
+    notesTextarea.value = notes;
+  }
+
+  const item = { id, tabEl: btn, panelEl: panel, containerEl: li };
+  tabs.push(item);
+
+  btn.addEventListener('click', () => {
     selectTab(id);
+    if (elements.outputView) elements.outputView.textContent = `Selected tab: ${title}`;
+  });
+  btn.addEventListener('keydown', (e) => {
+    const idx = tabs.findIndex(t => t.id === id);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nxt = tabs[Math.min(idx + 1, tabs.length - 1)];
+      if (nxt) {
+        nxt.tabEl.focus();
+        selectTab(nxt.id);
+        if (elements.outputView) elements.outputView.textContent = `Selected tab: ${nxt.tabEl.textContent}`;
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prv = tabs[Math.max(idx - 1, 0)];
+      if (prv) {
+        prv.tabEl.focus();
+        selectTab(prv.id);
+        if (elements.outputView) elements.outputView.textContent = `Selected tab: ${prv.tabEl.textContent}`;
+      }
+    }
+  });
+
+  renameBtn.addEventListener('click', () => {
+    const current = btn.textContent;
+    const newTitle = prompt('New tab name:', current || '');
+    if (newTitle && newTitle.trim() && titleInput) {
+      btn.textContent = newTitle.trim();
+      titleInput.value = newTitle.trim();
+      saveTabs();
+      if (elements.outputView) elements.outputView.textContent = `Renamed tab to: ${newTitle.trim()}`;
+    } else if (newTitle !== null) {
+      alert('Tab name cannot be empty.');
+      if (elements.outputView) elements.outputView.textContent = `Error: Tab name cannot be empty`;
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    removeTab(id);
     saveTabs();
-    return id;
+    if (elements.outputView) elements.outputView.textContent = `Closed tab: ${title}`;
+  });
+
+  if (titleInput) {
+    titleInput.addEventListener('input', () => {
+      btn.textContent = titleInput.value || `Tab ${numFromId(id)}`;
+      saveTabs();
+      if (elements.outputView) elements.outputView.textContent = `Updated tab title to: ${titleInput.value}`;
+    });
+  }
+
+  if (notesTextarea) {
+    notesTextarea.addEventListener('input', () => {
+      saveTabs();
+      if (elements.outputView) elements.outputView.textContent = `Updated notes for tab: ${btn.textContent}`;
+    });
+  }
+
+  selectTab(id);
+  saveTabs();
+  if (elements.outputView) elements.outputView.textContent = `Created tab: ${title}`;
+  return id;
 }
+
 function selectTab(id) {
-    tabs.forEach(function (t) {
-        var active = t.id === id;
-        t.tabEl.setAttribute('aria-selected', active ? 'true' : 'false');
-        t.panelEl.setAttribute('aria-hidden', active ? 'false' : 'true');
-    });
+  tabs.forEach(t => {
+    const active = t.id === id;
+    t.tabEl.setAttribute('aria-selected', `${active}`);
+    t.panelEl.setAttribute('aria-hidden', `${!active}`);
+  });
 }
+
 function removeTab(id) {
-    var idx = tabs.findIndex(function (t) { return t.id === id; });
-    if (idx === -1)
-        return;
-    var removedNum = numFromId(id);
-    var t = tabs.splice(idx, 1)[0];
-    t.containerEl.remove();
-    t.panelEl.remove();
-    if (tabs.length === 0) {
-        // reset counter fully if no tabs left
-        nextNum = 1;
-        saveTabs();
-        return;
-    }
-    // If most recent number was removed, roll counter back
-    if (removedNum === nextNum - 1) {
-        nextNum = Math.max(1, nextNum - 1);
-    }
-    // Focus/select a neighbor
-    var next = tabs[Math.min(idx, tabs.length - 1)];
-    if (next) {
-        selectTab(next.id);
-        next.tabEl.focus();
-    }
+  const idx = tabs.findIndex(t => t.id === id);
+  if (idx === -1) return;
+
+  const removedNum = numFromId(id);
+  const [t] = tabs.splice(idx, 1);
+  t.containerEl.remove();
+  t.panelEl.remove();
+
+  if (tabs.length === 0) {
+    nextNum = 1;
     saveTabs();
+    return;
+  }
+
+  if (removedNum === nextNum - 1) {
+    nextNum = Math.max(1, nextNum - 1);
+  }
+
+  const next = tabs[Math.min(idx, tabs.length - 1)];
+  if (next) {
+    selectTab(next.id);
+    next.tabEl.focus();
+  }
+  saveTabs();
 }
+
 function saveTabs() {
-    var tabData = tabs.map(function (t) {
-        var _a;
-        return ({
-            id: t.id,
-            title: t.tabEl.textContent || '',
-            notes: ((_a = t.panelEl.querySelector('.panel-notes')) === null || _a === void 0 ? void 0 : _a.value) || ''
-        });
-    });
-    try {
-        localStorage.setItem('tabs', JSON.stringify(tabData));
-    }
-    catch (_) { }
+  const tabData = tabs.map(t => ({
+    id: t.id,
+    title: t.tabEl.textContent || '',
+    notes: t.panelEl.querySelector('.panel-notes')?.value || ''
+  }));
+  try {
+    localStorage.setItem('tabs', JSON.stringify(tabData));
+  } catch (error) {
+    console.error('Failed to save tabs:', error);
+  }
 }
+
 function loadTabs() {
-    try {
-        var savedTabs = JSON.parse(localStorage.getItem('tabs') || '[]');
-        if (savedTabs.length > 0) {
-            savedTabs.forEach(function (tab) { return createTab(tab.title, tab.notes); });
-            nextNum = Math.max.apply(Math, savedTabs.map(function (t) { return numFromId(t.id); })) + 1;
-        }
-        else {
-            createTab('Welcome');
-        }
+  try {
+    const savedTabs = JSON.parse(localStorage.getItem('tabs') || '[]');
+    if (savedTabs.length > 0) {
+      savedTabs.forEach(tab => createTab(tab.title, tab.notes));
+      nextNum = Math.max(...savedTabs.map(t => numFromId(t.id))) + 1;
+    } else {
+      createTab('Welcome');
     }
-    catch (_) {
-        createTab('Welcome');
-    }
+  } catch (error) {
+    console.error('Failed to load tabs:', error);
+    createTab('Welcome');
+  }
 }
-if (addTabBtn) {
-    addTabBtn.addEventListener('click', function () { return createTab(); });
+
+function initialize() {
+  if (elements.toggleButton) {
+    elements.toggleButton.addEventListener('click', switchTheme);
+  }
+  if (elements.hamburger) {
+    elements.hamburger.addEventListener('click', toggleHamburgerMenu);
+  }
+  if (elements.addTabBtn) {
+    elements.addTabBtn.addEventListener('click', () => createTab());
+  }
+  if (elements.outputBtn) {
+    elements.outputBtn.addEventListener('click', generateOutputHTML);
+  }
+  initTheme();
+  initNavButtons();
+  loadTabs();
 }
-// Load tabs on page load
-loadTabs();
+
+initialize();
+

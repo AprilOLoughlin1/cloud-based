@@ -1,14 +1,13 @@
-
 * { box-sizing: border-box; }
 
-/* change backround color. light grey for light mode */
+/* Light grey background for light mode */
 body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
-    background-color: #F5F5F5; 
+    background-color: #F5F5F5;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -22,20 +21,24 @@ footer {
     color: white;
     padding: 10px;
     text-align: center;
-    transition: transform 0.2s; 
+    transition: transform 0.2s;
 }
 
-footer.hover {
-    transform: translateY(-2pc);
+footer:hover {
+    transform: translateY(-2px);
 }
 
-h1 { color: #333; 
-font-size: 2rem; 
-font-weight: 700;
+h1 {
+    color: #333;
+    font-size: 2rem;
+    font-weight: 700;
 }
-p { color: #666; }
 
-/*Student Number Styling*/
+p {
+    color: #666;
+}
+
+/* Student Number Styling */
 .student-number {
     position: fixed;
     top: 20px;
@@ -43,21 +46,21 @@ p { color: #666; }
     font-size: 14px;
     color: #333;
     z-index: 1000;
-    background: rgba (255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.8);
     padding: 4px 8px;
     border-radius: 4px;
 }
 
 body.dark-mode .student-number {
     color: #ccc;
-    background: rgba(17, 24, 39, 0.8); /*dark mode*/
+    background: rgba(17, 24, 39, 0.8);
 }
 
 /* Hamburger Menu */
 .hamburger-container {
     position: fixed;
     top: 20px;
-    right: 100px; 
+    right: 100px;
     z-index: 1000;
 }
 
@@ -93,7 +96,7 @@ body.dark-mode .student-number {
     display: none;
     position: absolute;
     top: 40px;
-    right: 0; 
+    right: 0;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 200px;
@@ -163,8 +166,13 @@ body.dark-mode .student-number {
     transition: transform 0.3s;
 }
 
-.toggle-button.active { background-color: #4caf50; }
-.toggle-button.active .toggle-circle { transform: translateX(30px); }
+.toggle-button.active {
+    background-color: #4caf50;
+}
+
+.toggle-button.active .toggle-circle {
+    transform: translateX(30px);
+}
 
 /* Theme label */
 .theme-info {
@@ -177,22 +185,54 @@ body.dark-mode .student-number {
 }
 
 /* Dark mode */
-body.dark-mode { background-color: #333; color: #fff; }
-body.dark-mode h1 { color: #fff; }
-body.dark-mode p { color: #ccc; }
-body.dark-mode .theme-info { color: #ccc; }
-body.dark-mode footer { background-color: #555; color: #ccc; }
-body.dark-mode .bar { background-color: #ccc; }
-body.dark-mode .hamburger-menu { background: #0b1220; border-color: #1f2937; }
-body.dark-mode .hamburger-menu li { border-bottom: 1px solid #1f2937; }
-body.dark-mode .hamburger-menu a { color: #ccc; }
-body.dark-mode .hamburger-menu a:hover { background: #1f2937; }
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
 
-/* === App layout === */
+body.dark-mode h1 {
+    color: #fff;
+}
+
+body.dark-mode p {
+    color: #ccc;
+}
+
+body.dark-mode .theme-info {
+    color: #ccc;
+}
+
+body.dark-mode footer {
+    background-color: #555;
+    color: #ccc;
+}
+
+body.dark-mode .bar {
+    background-color: #ccc;
+}
+
+body.dark-mode .hamburger-menu {
+    background: #0b1220;
+    border-color: #1f2937;
+}
+
+body.dark-mode .hamburger-menu li {
+    border-bottom: 1px solid #1f2937;
+}
+
+body.dark-mode .hamburger-menu a {
+    color: #ccc;
+}
+
+body.dark-mode .hamburger-menu a:hover {
+    background: #1f2937;
+}
+
+/* App layout */
 .app {
     display: grid;
-    grid-template-columns: 260px 1fr; /* sidebar fixed width */
-    flex: 1; /* Ensure app fills main */
+    grid-template-columns: 260px 1fr;
+    flex: 1;
 }
 
 /* Sidebar */
@@ -200,6 +240,7 @@ body.dark-mode .hamburger-menu a:hover { background: #1f2937; }
     text-align: left;
     border-right: 1px solid #e2e8f0;
     padding: 12px;
+    padding-top: 40px; /* Prevent overlap with student number */
     background: #f8fafc;
     display: flex;
     flex-direction: column;
@@ -210,7 +251,10 @@ body.dark-mode .sidebar {
     background: #0f172a;
 }
 
-.sidebar-header { margin-bottom: 10px; }
+.sidebar-header {
+    margin-bottom: 10px;
+}
+
 .sidebar-header h2 {
     font-size: 16px;
     margin: 0;
@@ -224,9 +268,12 @@ body.dark-mode .sidebar {
     color: #666;
     margin-left: 6px;
 }
-body.dark-mode .tab-limit { color: #aaa; }
 
-/* === Tab list === */
+body.dark-mode .tab-limit {
+    color: #aaa;
+}
+
+/* Tab list */
 .tab-list {
     flex: 1 1 auto;
     list-style: none;
@@ -238,7 +285,7 @@ body.dark-mode .tab-limit { color: #aaa; }
     overflow-y: auto;
 }
 
-/* === Tabs: full width, equal sizing === */
+/* Tabs */
 .tab {
     display: flex;
     align-items: center;
@@ -308,18 +355,29 @@ body.dark-mode .tab {
     cursor: pointer;
 }
 
-.icon-btn:hover { background: #fff; }
-.icon-btn:focus { outline: 2px solid #3b82f6; outline-offset: 2px; }
+.icon-btn:hover {
+    background: #fff;
+}
+
+.icon-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
 
 body.dark-mode .icon-btn {
     border-color: #1f2937;
     background: #111827;
 }
 
-body.dark-mode .icon-btn:hover { background: #0b1220; }
-body.dark-mode .icon-btn:focus { outline: 2px solid #60a5fa; }
+body.dark-mode .icon-btn:hover {
+    background: #0b1220;
+}
 
-/* === Big Add Tab button === */
+body.dark-mode .icon-btn:focus {
+    outline: 2px solid #60a5fa;
+}
+
+/* Add Tab button */
 .add-tab {
     margin-top: auto;
     padding: 12px;
@@ -333,18 +391,29 @@ body.dark-mode .icon-btn:focus { outline: 2px solid #60a5fa; }
     transition: background-color 0.2s;
 }
 
-.add-tab:hover { background: #2563eb; }
-.add-tab:focus { outline: 2px solid #3b82f6; outline-offset: 2px; }
+.add-tab:hover {
+    background: #2563eb;
+}
+
+.add-tab:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
 
 body.dark-mode .add-tab {
     background: #60a5fa;
     color: #0b1220;
 }
 
-body.dark-mode .add-tab:hover { background: #3b82f6; }
-body.dark-mode .add-tab:focus { outline: 2px solid #60a5fa; }
+body.dark-mode .add-tab:hover {
+    background: #3b82f6;
+}
 
-/* === Content area === */
+body.dark-mode .add-tab:focus {
+    outline: 2px solid #60a5fa;
+}
+
+/* Content area */
 .content {
     text-align: left;
     padding: 16px;
@@ -363,9 +432,12 @@ body.dark-mode .add-tab:focus { outline: 2px solid #60a5fa; }
     border-radius: 8px;
     background: #fff;
     padding: 10px;
+    animation: fadeIn 0.3s ease-in;
 }
 
-.panel[aria-hidden="false"] { display: block; }
+.panel[aria-hidden="false"] {
+    display: block;
+}
 
 body.dark-mode .panel {
     border-color: #1f2937;
@@ -385,7 +457,9 @@ body.dark-mode .panel {
     color: #666;
 }
 
-body.dark-mode .panel-body label { color: #ccc; }
+body.dark-mode .panel-body label {
+    color: #ccc;
+}
 
 .panel-title-input,
 .panel-notes {
@@ -416,7 +490,13 @@ body.dark-mode .panel-notes:focus {
     outline: 2px solid #60a5fa;
 }
 
-/* === Responsive === */
+/* Fade-in animation for panels */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive */
 @media (max-width: 760px) {
     .app {
         grid-template-columns: 1fr;
@@ -426,14 +506,14 @@ body.dark-mode .panel-notes:focus {
         z-index: 1;
     }
     .hamburger-container {
-        right: 80px; /* Adjust to avoid theme toggle */
+        right: 80px;
     }
     .hamburger-menu.open {
-        width: 150px; /* Smaller menu on mobile */
+        width: 150px;
     }
     .student-number {
         top: 10px;
-        left:10px;
+        left: 10px;
         font-size: 12px;
     }
 }
