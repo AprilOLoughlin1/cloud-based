@@ -1,65 +1,65 @@
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment 1</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="hamburger-container">
-        <div class="hamburger" onclick="toggleHamburgerMenu()">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-</div>
-<nav class="hamburger-menu">
-    <ul>
-        <li><a href= "/">Home</a></li>
-        <li><a href= "/">"about">About</a></li>
-        <li><a href= "/"></a></li>
-    </ul>
-</nav>
-</div>
-    <div class="toggle-container">
-        <button class="toggle-button" onclick="switchTheme()">
-            <span class="toggle-circle"></span>
-        </button>
-    </div> 
-    <div class="theme-info">Theme: <span id="theme-name">Light</span></div>
-    <main>
-        <div class="app">
-            <aside class="sidebar" aria-label="Tabs sidebar">
-                <div class="sidebar-header">
-                    <h2>Tabs <span class="tab-limit">(max 15)</span></h2>
-                </div>
-                <ul id="tab-list" class="tab-list" role="tablist" aria-orientation="vertical">
-                </ul>
-                <button id="add-tab" class="add-tab" aria-label="Add tab">Add Tab</button>
-            </aside>
-            <div class="content">
-                <h1>Cloud Web</h1>
-                <p>This is a simple webpage to get started.</p>
-                <div id="tab-panels" class="tab-panels">
-                </div>
-            </div>
-        </div>
-    </main>
-    <footer>
-        <p>April-Jane O'Loughlin TM all rights reserved, 22453908, 29/8/25</p>
-    </footer>
-    <template id="panel-template">
-        <div class="panel-body">
-            <label>
-                Title:
-                <input class="panel-title-input" type="text" placeholder="Untitled tab"/>
-            </label>
-            <label>
-                Notes:
-                <textarea class="panel-notes" rows="6" placeholder="Write something..."></textarea>
-            </label>
-        </div>
-    </template>
-    <script src="script.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Assignment 1</title>
+       <link rel="stylesheet" href="styles.css">
+   </head>
+   <body>
+       <div class="hamburger-container">
+           <div class="hamburger" onclick="toggleHamburgerMenu()">
+               <div class="bar"></div>
+               <div class="bar"></div>
+               <div class="bar"></div>
+           </div>
+           <nav class="hamburger-menu">
+               <ul>
+                   <li><a href="#">Home</a></li>
+                   <li><a href="#">About</a></li>
+                   <li><a href="#">Services</a></li>
+                   <li><a href="#">Contact</a></li>
+               </ul>
+           </nav>
+       </div>
+       <div class="toggle-container">
+           <button class="toggle-button" onclick="switchTheme()">
+               <span class="toggle-circle"></span>
+           </button>
+       </div>
+       <div class="theme-info">Theme: <span id="theme-name">Light</span></div>
+       <main>
+           <div class="app">
+               <aside class="sidebar" aria-label="Tabs sidebar">
+                   <div class="sidebar-header">
+                       <h2>Tabs <span class="tab-limit">(max 15)</span></h2>
+                   </div>
+                   <ul id="tab-list" class="tab-list" role="tablist" aria-orientation="vertical"</ul>
+                   <button id="add-tab" class="add-tab" aria-label="Add tab">Add Tab</button>
+               </aside>
+               <div class="content">
+                   <h1>Cloud Web</h1>
+                   <p>This is a simple webpage to get started.</p>
+                   <div id="tab-panels" class="tab-panels">
+                   </div>
+               </div>
+           </div>
+       </main>
+       <footer>
+           <p>April-Jane O'Loughlin TM all rights reserved, 22453908, 29/8/25</p>
+       </footer>
+       <template id="panel-template">
+           <div class="panel-body">
+               <label>
+                   Title:
+                   <input class="panel-title-input" type="text" placeholder="Untitled tab"/>
+               </label>
+               <label>
+                   Notes:
+                   <textarea class="panel-notes" rows="6" placeholder="Write something..."></textarea>
+               </label>
+           </div>
+       </template>
+       <script src="script.js"></script>
+   </body>
+   </html>
