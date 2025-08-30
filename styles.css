@@ -1,11 +1,13 @@
+/* === Base styles === */
+* { box-sizing: border-box; }
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    text-align: center;
     margin: 0;
-    background-color: #F5F5F5;
+    background-color: #F5F5F5; /* Light grey for light mode */
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -19,18 +21,14 @@ footer {
     color: white;
     padding: 10px;
     text-align: center;
-
-}
-h1 {
-    color: #333;
 }
 
-p {
-    color: #666;
-}
+h1 { color: #333; }
+p { color: #666; }
 
+/* Theme toggle */
 .toggle-container {
-    position: fixed ;
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 1000;
@@ -48,51 +46,275 @@ p {
     transition: background-color 0.3s;
 }
 
+.toggle-button:focus {
+    outline: 2px solid #4caf50;
+    outline-offset: 2px;
+}
+
 .toggle-circle {
     position: absolute;
     top: 2px;
     left: 2px;
     width: 26px;
     height: 26px;
-    background-color: white;
+    background-color: #fff;
     border-radius: 50%;
     transition: transform 0.3s;
 }
 
-.toggle-button.active {
-    background-color: #4caf50;
-}
+.toggle-button.active { background-color: #4caf50; }
+.toggle-button.active .toggle-circle { transform: translateX(30px); }
 
-.toggle-button.active .toggle-circle {
-    transform: translateX(30px);
-}
-
+/* Theme label */
 .theme-info {
     font-size: 16px;
     color: #333;
     position: fixed;
     top: 60px;
     right: 20px;
-    z-index:1000;
+    z-index: 1000;
 }
 
-body.dark-mode {
-    background-color: #333;
+/* Dark mode */
+body.dark-mode { background-color: #333; color: #fff; }
+body.dark-mode h1 { color: #fff; }
+body.dark-mode p { color: #ccc; }
+body.dark-mode .theme-info { color: #ccc; }
+body.dark-mode footer { background-color: #555; color: #ccc; }
+
+/* === App layout === */
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr; /* sidebar fixed width */
+    flex: 1; /* Ensure app fills main */
+}
+
+/* Sidebar */
+.sidebar {
+    text-align: left;
+    border-right: 1px solid #e2e8f0;
+    padding: 12px;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+}
+
+body.dark-mode .sidebar {
+    border-right-color: #1f2937;
+    background: #0f172a;
+}
+
+.sidebar-header { margin-bottom: 10px; }
+.sidebar-header h2 {
+    font-size: 16px;
+    margin: 0;
+    color: inherit;
+}
+
+/* Tab limit note */
+.tab-limit {
+    font-size: 12px;
+    font-weight: normal;
+    color: #666;
+    margin-left: 6px;
+}
+body.dark-mode .tab-limit { color: #aaa; }
+
+/* === Tab list === */
+.tab-list {
+    flex: 1 1 auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    height: 36px;
+    padding: 0 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+body.dark-mode .tab {
+    border-color: #1f2937;
+    background: #0b1220;
+}
+
+.tab-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    flex: 1 1 auto;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-btn[aria-selected="true"] {
+    font-weight: bold;
+    border: 2px solid #3b82f6;
+    border-radius: 6px;
+}
+
+.tab-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.tab-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: inherit;
+    border-radius: 4px;
+    height: 22px;
+    min-width: 22px;
+    padding: 0 6px;
+    font-size: 12px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.icon-btn:hover { background: #fff; }
+.icon-btn:focus { outline: 2px solid #3b82f6; outline-offset: 2px; }
+
+body.dark-mode .icon-btn {
+    border-color: #1f2937;
+    background: #111827;
+}
+
+body.dark-mode .icon-btn:hover { background: #0b1220; }
+body.dark-mode .icon-btn:focus { outline: 2px solid #60a5fa; }
+
+/* === Big Add Tab button === */
+.add-tab {
+    margin-top: auto;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: #3b82f6;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.add-tab:hover { background: #2563eb; }
+.add-tab:focus { outline: 2px solid #3b82f6; outline-offset: 2px; }
+
+body.dark-mode .add-tab {
+    background: #60a5fa;
+    color: #0b1220;
+}
+
+body.dark-mode .add-tab:hover { background: #3b82f6; }
+body.dark-mode .add-tab:focus { outline: 2px solid #60a5fa; }
+
+/* === Content area === */
+.content {
+    text-align: left;
+    padding: 16px;
+}
+
+/* Panels */
+.tab-panels {
+    margin-top: 12px;
+    display: grid;
+    gap: 12px;
+}
+
+.panel {
+    display: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px;
+}
+
+.panel[aria-hidden="false"] { display: block; }
+
+body.dark-mode .panel {
+    border-color: #1f2937;
+    background: #0b1220;
+}
+
+/* Panel body */
+.panel-body {
+    display: grid;
+    gap: 8px;
+}
+
+.panel-body label {
+    display: grid;
+    gap: 4px;
+    font-size: 13px;
+    color: #666;
+}
+
+body.dark-mode .panel-body label { color: #ccc; }
+
+.panel-title-input,
+.panel-notes {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: inherit;
+    background: #f8fafc;
+    font-size: 13px;
+}
+
+.panel-title-input:focus,
+.panel-notes:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+body.dark-mode .panel-title-input,
+body.dark-mode .panel-notes {
+    border-color: #1f2937;
+    background: #111827;
     color: #fff;
 }
 
-body.dark-mode h1 {
-    color: #fff;
+body.dark-mode .panel-title-input:focus,
+body.dark-mode .panel-notes:focus {
+    outline: 2px solid #60a5fa;
 }
 
-body.dark-mode p {
-    color: #ccc;
-}
-
-body.dark-mode .theme-info {
-    color: #ccc;
-}
-
-body.dark-mode footer {
-    color: #ccc;
+@media (max-width: 760px) {
+    .app {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        position: relative;
+        z-index: 1;
+    }
 }
