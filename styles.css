@@ -1,10 +1,26 @@
 body {
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     text-align: center;
-    margin-top: 50px;
+    margin: 0;
+    background-color: #F5F5F5;
     transition: background-color 0.3s, color 0.3s;
 }
 
+main {
+    flex-grow: 1;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+
+}
 h1 {
     color: #333;
 }
@@ -55,7 +71,7 @@ p {
     font-size: 16px;
     color: #333;
     position: fixed;
-    top: 60 px;
+    top: 60px;
     right: 20px;
     z-index:1000;
 }
@@ -74,5 +90,9 @@ body.dark-mode p {
 }
 
 body.dark-mode .theme-info {
+    color: #ccc;
+}
+
+body.dark-mode footer {
     color: #ccc;
 }

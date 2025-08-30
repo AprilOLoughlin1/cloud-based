@@ -1,3 +1,5 @@
+
+// generated with help of ChatGPT and Reddit
 function switchTheme() {
     const body = document.body;
     const toggleButton = document.querySelector('.toggle-button');
