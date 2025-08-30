@@ -24,7 +24,10 @@ footer {
     text-align: center;
 }
 
-h1 { color: #333; }
+h1 { color: #333; 
+font-size: 2rem; 
+font-weight: 700;
+}
 p { color: #666; }
 
 /* Hamburger Menu */
